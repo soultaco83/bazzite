@@ -500,6 +500,11 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
         edk2-ovmf \
         qemu \
         libvirt \
+		kernel-devel \
+        kernel-headers \
+        elfutils-libelf-devel \
+        make \
+        gcc \
         lsb_release && \
     rpm-ostree install \
         ublue-update && \
@@ -520,6 +525,29 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     rm -f /tmp/ls-iommu.tar.gz && \
     cp -r /tmp/ls-iommu/ls-iommu /usr/bin/ && \
     rm -rf /tmp/ls-iommu && \
+	# Add Lychee Slicer AppImage
+    mkdir -p /usr/local/bin/lychee && \
+    curl -L "https://mango-lychee.nyc3.cdn.digitaloceanspaces.com/LycheeSlicer-7.2.0.AppImage?utm_source=website&utm_medium=download&utm_campaign=lychee_slicer72" -o /usr/local/bin/lychee/LycheeSlicer.AppImage && \
+    chmod +x /usr/local/bin/lychee/LycheeSlicer.AppImage && \
+    cat > /usr/share/applications/lychee-slicer.desktop << 'EOF' && \
+[Desktop Entry]
+Name=Lychee Slicer
+Exec=/usr/local/bin/lychee/LycheeSlicer.AppImage
+Type=Application
+Categories=Graphics;3DGraphics;
+Comment=A powerful resin 3D printing slicer
+EOF
+    /usr/libexec/containerbuild/cleanup.sh && \
+    ostree container commit
+	
+# Install Vmware workstation Player 17
+RUN curl -L "https://softwareupdate.vmware.com/cds/vmw-desktop/ws/17.6.2/24409262/linux/core/VMware-Workstation-17.6.2-24409262.x86_64.bundle.tar" -o /tmp/vmware.tar && \
+    cd /tmp && \
+    tar xf vmware.tar && \
+    chmod +x VMware-Workstation-*.bundle && \
+    ./VMware-Workstation-*.bundle --console --required --eulas-agreed && \
+    rm -f VMware-Workstation-*.bundle vmware.tar && \
+    systemctl enable vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service && \
     /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
 

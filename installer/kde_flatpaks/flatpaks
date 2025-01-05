@@ -20,3 +20,14 @@ runtime/com.obsproject.Studio.Plugin.Gstreamer/x86_64/stable
 runtime/com.obsproject.Studio.Plugin.GStreamerVaapi/x86_64/stable
 runtime/org.gtk.Gtk3theme.adw-gtk3/x86_64/3.22
 runtime/org.gtk.Gtk3theme.adw-gtk3-dark/x86_64/3.22
+apps/com.github.IsmaelMartinez.teams_for_linux/x86_64/stable
+app/com.discordapp.Discord/x86_64/stable
+app/com.google.Chrome/x86_64/stable
+app/org.telegram.desktop/x86_64/stable
+apps/com.slack.Slack/x86_64/stable
+apps/org.videolan.VLC/x86_64/stable
+apps/com.usebottles.bottles/x86_64/stable
+apps/com.github.Matoking.protontricks/x86_64/stable
+apps/org.libreoffice.LibreOffice/x86_64/stable
+apps/com.core447.StreamController/x86_64/stable
+apps/dev.vencord.Vesktop/x86_64/stable
