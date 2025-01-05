@@ -526,17 +526,17 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     cp -r /tmp/ls-iommu/ls-iommu /usr/bin/ && \
     rm -rf /tmp/ls-iommu && \
 	# Add Lychee Slicer AppImage
-    mkdir -p /usr/local/bin/lychee && \
-    curl -L "https://mango-lychee.nyc3.cdn.digitaloceanspaces.com/LycheeSlicer-7.2.0.AppImage?utm_source=website&utm_medium=download&utm_campaign=lychee_slicer72" -o /usr/local/bin/lychee/LycheeSlicer.AppImage && \
-    chmod +x /usr/local/bin/lychee/LycheeSlicer.AppImage && \
-    cat > /usr/share/applications/lychee-slicer.desktop << 'EOF' && \
-[Desktop Entry]
-Name=Lychee Slicer
-Exec=/usr/local/bin/lychee/LycheeSlicer.AppImage
-Type=Application
-Categories=Graphics;3DGraphics;
-Comment=A powerful resin 3D printing slicer
-EOF
+#    mkdir -p /usr/local/bin/lychee && \
+ #   curl -L "https://mango-lychee.nyc3.cdn.digitaloceanspaces.com/LycheeSlicer-7.2.0.AppImage?utm_source=website&utm_medium=download&utm_campaign=lychee_slicer72" -o /usr/local/bin/lychee/LycheeSlicer.AppImage && \
+#    chmod +x /usr/local/bin/lychee/LycheeSlicer.AppImage && \
+  #  cat > /usr/share/applications/lychee-slicer.desktop << 'EOF' && \
+#[Desktop Entry]
+#Name=Lychee Slicer
+#Exec=/usr/local/bin/lychee/LycheeSlicer.AppImage
+#Type=Application
+#Categories=Graphics;3DGraphics;
+#Comment=A powerful resin 3D printing slicer
+#EOF
     /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
 	
