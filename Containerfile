@@ -541,15 +541,15 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     ostree container commit
 	
 # Install Vmware workstation Player 17
-RUN curl -L "https://softwareupdate.vmware.com/cds/vmw-desktop/ws/17.6.2/24409262/linux/core/VMware-Workstation-17.6.2-24409262.x86_64.bundle.tar" -o /tmp/vmware.tar && \
-    cd /tmp && \
-    tar xf vmware.tar && \
-    chmod +x VMware-Workstation-*.bundle && \
-    ./VMware-Workstation-*.bundle --console --required --eulas-agreed && \
-    rm -f VMware-Workstation-*.bundle vmware.tar && \
-    systemctl enable vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service && \
-    /usr/libexec/containerbuild/cleanup.sh && \
-    ostree container commit
+#RUN curl -L "https://softwareupdate.vmware.com/cds/vmw-desktop/ws/17.6.2/24409262/linux/core/VMware-Workstation-17.6.2-24409262.x86_64.bundle.tar" -o /tmp/vmware.tar && \
+#    cd /tmp && \
+  #  tar xf vmware.tar && \
+  #  chmod +x VMware-Workstation-*.bundle && \
+ #   ./VMware-Workstation-*.bundle --console --required --eulas-agreed && \
+  #  rm -f VMware-Workstation-*.bundle vmware.tar && \
+  #  systemctl enable vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service && \
+ #   /usr/libexec/containerbuild/cleanup.sh && \
+   # ostree container commit
 
 # Install Steam & Lutris, plus supporting packages
 # Downgrade ibus to fix an issue with the Steam keyboard
