@@ -534,7 +534,7 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
 # Add Lychee Slicer AppImage
     mkdir -p /usr/local/bin/lychee && \
     curl -L "https://mango-lychee.nyc3.cdn.digitaloceanspaces.com/LycheeSlicer-7.2.0.AppImage?utm_source=website&utm_medium=download&utm_campaign=lychee_slicer72" -o /usr/local/bin/lychee/LycheeSlicer.AppImage && \
-    chmod +x /usr/local/bin/lychee/LycheeSlicer.AppImage && \
+    chmod +x /usr/local/bin/lychee/LycheeSlicer.AppImage
 	
 # Install VMware Workstation Player
 RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
