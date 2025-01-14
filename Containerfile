@@ -542,10 +542,11 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
 # Install VMware Workstation Player
 RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     cd /tmp && \
-    curl -LO "https://softwareupdate.vmware.com/cds/vmw-desktop/player/17.6.2/24409262/linux/core/VMware-Player-17.6.2-24409262.x86_64.bundle" && \
+    curl -LO "https://softwareupdate.vmware.com/cds/vmw-desktop/player/17.6.2/24409262/linux/core/VMware-Player-17.6.2-24409262.x86_64.bundle.tar" && \
+    tar xf VMware-Player-*.tar && \
     chmod +x VMware-Player-*.bundle && \
     ./VMware-Player-*.bundle --console --required --eulas-agreed && \
-    rm -f VMware-Player-*.bundle vmware.tar && \
+    rm -f VMware-Player-*.bundle VMware-Player-*.tar && \
     # Install required dependencies for VMware
     systemctl enable vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service && \
     /usr/libexec/containerbuild/cleanup.sh && \
