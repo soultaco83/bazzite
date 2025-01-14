@@ -344,7 +344,7 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/_copr_ublue-os-akmods.repo && \
     rpm-ostree install \
         /tmp/akmods-rpms/kmods/*kvmfr*.rpm \
-###/tmp/akmods-rpms/kmods/*xone*.rpm \
+		#/tmp/akmods-rpms/kmods/*xone*.rpm \
         /tmp/akmods-rpms/kmods/*openrazer*.rpm \
         /tmp/akmods-rpms/kmods/*v4l2loopback*.rpm \
         /tmp/akmods-rpms/kmods/*wl*.rpm \
@@ -538,13 +538,14 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     rm -rf /tmp/ls-iommu && \
     /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
+	
 # Add Lychee Slicer AppImage
-RUN mkdir -p /usr/local/bin/lychee && \
-    curl -L "https://mango-lychee.nyc3.cdn.digitaloceanspaces.com/LycheeSlicer-7.2.0.AppImage?utm_source=website&utm_medium=download&utm_campaign=lychee_slicer72" -o /usr/local/bin/lychee/LycheeSlicer.AppImage && \
-    chmod +x /usr/local/bin/lychee/LycheeSlicer.AppImage && \
+RUN mkdir -p /opt/lychee && \
+    curl -L "https://mango-lychee.nyc3.cdn.digitaloceanspaces.com/LycheeSlicer-7.2.0.AppImage?utm_source=website&utm_medium=download&utm_campaign=lychee_slicer72" -o /opt/lychee/LycheeSlicer.AppImage && \
+    chmod +x /opt/lychee/LycheeSlicer.AppImage && \
     /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
-
+	
 # Install VMware Workstation Player
 RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     cd /tmp && \
