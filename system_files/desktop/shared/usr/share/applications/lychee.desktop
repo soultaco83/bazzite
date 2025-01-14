@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Lychee Slicer
-Exec=/opt/lychee/LycheeSlicer.AppImage
-Type=Application
-Categories=Graphics;3DGraphics;Development;
-Comment=A powerful resin 3D printing slicer
-Terminal=false
-Icon=/opt/lychee/lychee-icon.png

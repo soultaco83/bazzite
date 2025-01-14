@@ -539,12 +539,6 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
 	
-# Add Lychee Slicer AppImage
-RUN curl -L "https://mango-lychee.nyc3.cdn.digitaloceanspaces.com/LycheeSlicer-7.2.0.AppImage?utm_source=website&utm_medium=download&utm_campaign=lychee_slicer72" -o /opt/lychee/LycheeSlicer.AppImage && \
-    chmod +x /opt/lychee/LycheeSlicer.AppImage && \
-    /usr/libexec/containerbuild/cleanup.sh && \
-    ostree container commit
-	
 # Install VMware Workstation Player
 RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     cd /tmp && \
