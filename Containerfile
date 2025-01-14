@@ -344,7 +344,7 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/_copr_ublue-os-akmods.repo && \
     rpm-ostree install \
         /tmp/akmods-rpms/kmods/*kvmfr*.rpm \
-        /tmp/akmods-rpms/kmods/*xone*.rpm \
+###/tmp/akmods-rpms/kmods/*xone*.rpm \
         /tmp/akmods-rpms/kmods/*openrazer*.rpm \
         /tmp/akmods-rpms/kmods/*v4l2loopback*.rpm \
         /tmp/akmods-rpms/kmods/*wl*.rpm \
@@ -544,12 +544,6 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     ./VMware-Player-*.bundle --console --required --eulas-agreed && \
     rm -f VMware-Player-*.bundle vmware.tar && \
     # Install required dependencies for VMware
-    rpm-ostree install \
-        kernel-devel \
-        kernel-headers \
-        elfutils-libelf-devel \
-        make \
-        gcc && \
     systemctl enable vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service && \
     /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
