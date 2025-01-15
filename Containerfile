@@ -374,31 +374,26 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
 # Install patched switcheroo control with proper discrete GPU support
 # Tempporary fix for GPU Encoding
 RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
-    # First enable all needed repos
-    sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-*.repo && \
-    # Install 32-bit Mesa packages from base repo first
     rpm-ostree install \
-        mesa-dri-drivers.i686 \
-        mesa-libGL.i686 && \
-    # Create directories for Mesa fixes
-    mkdir -p /tmp/mesa-fix64/dri /tmp/mesa-fix32/dri && \
-    # Copy Mesa files
+        mesa-dri-drivers.i686 && \
+    mkdir -p /tmp/mesa-fix64/dri && \
     cp /usr/lib64/libgallium-*.so /tmp/mesa-fix64/ && \
     cp /usr/lib64/dri/kms_swrast_dri.so /tmp/mesa-fix64/dri/ && \
     cp /usr/lib64/dri/libdril_dri.so /tmp/mesa-fix64/dri/ && \
     cp /usr/lib64/dri/swrast_dri.so /tmp/mesa-fix64/dri/ && \
     cp /usr/lib64/dri/virtio_gpu_dri.so /tmp/mesa-fix64/dri/ && \
+    mkdir -p /tmp/mesa-fix32/dri && \
     cp /usr/lib/libgallium-*.so /tmp/mesa-fix32/ && \
     cp /usr/lib/dri/kms_swrast_dri.so /tmp/mesa-fix32/dri/ && \
     cp /usr/lib/dri/libdril_dri.so /tmp/mesa-fix32/dri/ && \
     cp /usr/lib/dri/swrast_dri.so /tmp/mesa-fix32/dri/ && \
     cp /usr/lib/dri/virtio_gpu_dri.so /tmp/mesa-fix32/dri/ && \
-    # Install remaining packages from bazzite-multilib
     rpm-ostree override replace \
     --experimental \
     --from repo=copr:copr.fedorainfracloud.org:kylegospo:bazzite-multilib \
         mesa-libxatracker \
         mesa-libglapi \
+        mesa-dri-drivers \
         mesa-libgbm \
         mesa-libEGL \
         mesa-vulkan-drivers \
@@ -417,19 +412,17 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
         bluez-cups \
         bluez-libs \
         xorg-x11-server-Xwayland && \
-    # Apply Mesa fixes
     rsync -a /tmp/mesa-fix64/ /usr/lib64/ && \
     rsync -a /tmp/mesa-fix32/ /usr/lib/ && \
-    rm -rf /tmp/mesa-fix64 /tmp/mesa-fix32 && \
-    # Install additional packages
+    rm -rf /tmp/mesa-fix64 && \
+    rm -rf /tmp/mesa-fix32 && \
+    sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-*.repo && \
     rpm-ostree install \
         libaacs \
         libbdplus \
         libbluray \
         libbluray-utils && \
-    # Cleanup repos
     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-*.repo && \
-    # Install switcheroo-control
     rpm-ostree override replace \
     --experimental \
     --from repo=copr:copr.fedorainfracloud.org:sentry:switcheroo-control_discrete \
@@ -543,24 +536,6 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     rm -f /tmp/ls-iommu.tar.gz && \
     cp -r /tmp/ls-iommu/ls-iommu /usr/bin/ && \
     rm -rf /tmp/ls-iommu && \
-    /usr/libexec/containerbuild/cleanup.sh && \
-    ostree container commit
-	
-# Install VMware Workstation Player
-RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
-    cd /tmp && \
-    mkdir -p /var/log && \
-    touch /var/log/vmware-installer && \
-    # Install required dependencies first
-    rpm-ostree install kernel-devel kernel-headers gcc make perl && \
-    # Download and install VMware Player
-    curl -LO "https://softwareupdate.vmware.com/cds/vmw-desktop/player/17.6.2/24409262/linux/core/VMware-Player-17.6.2-24409262.x86_64.bundle.tar" && \
-    tar xf VMware-Player-*.tar && \
-    chmod +x VMware-Player-*.bundle && \
-    ./VMware-Player-*.bundle --console --required --eulas-agreed && \
-    rm -f VMware-Player-*.bundle VMware-Player-*.tar && \
-    # Enable services
-    systemctl enable vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service && \
     /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
 
@@ -1123,4 +1098,28 @@ RUN echo "import \"/usr/share/ublue-os/just/95-bazzite-nvidia.just\"" >> /usr/sh
     /usr/libexec/containerbuild/build-initramfs && \
     /usr/libexec/containerbuild/cleanup.sh && \
     mkdir -p /var/tmp && chmod 1777 /var/tmp && \
+    ostree container commit
+
+# Install VMware Workstation Player
+RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
+    cd /tmp && \
+    mkdir -p /var/log && \
+    touch /var/log/vmware-installer && \
+    # Install required dependencies first
+    rpm-ostree install \
+  	kernel-devel \
+ 	kernel-headers \
+ 	gcc \
+  	gcc-c++ \
+	make \
+	elfutils-libelf-devel
+    # Download and install VMware Player
+    curl -LO "https://softwareupdate.vmware.com/cds/vmw-desktop/player/17.6.2/24409262/linux/core/VMware-Player-17.6.2-24409262.x86_64.bundle.tar" && \
+    tar xf VMware-Player-*.tar && \
+    chmod +x VMware-Player-*.bundle && \
+    ./VMware-Player-*.bundle --console --required --eulas-agreed && \
+    rm -f VMware-Player-*.bundle VMware-Player-*.tar && \
+    # Enable services
+    systemctl enable vmware-networks.service vmware-usbarbitrator.service vmware-hostd.service && \
+    /usr/libexec/containerbuild/cleanup.sh && \
     ostree container commit
