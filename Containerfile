@@ -542,6 +542,7 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
 # Install VMware Workstation Player
 RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     cd /tmp && \
+    mkdir -p /var/log && \
     touch /var/log/vmware-installer && \
     curl -LO "https://softwareupdate.vmware.com/cds/vmw-desktop/player/17.6.2/24409262/linux/core/VMware-Player-17.6.2-24409262.x86_64.bundle.tar" && \
     tar xf VMware-Player-*.tar && \
