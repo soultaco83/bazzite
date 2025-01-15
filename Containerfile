@@ -375,14 +375,15 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
 # Tempporary fix for GPU Encoding
 RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
     rpm-ostree install \
-        mesa-dri-drivers.i686 && \
+        mesa-dri-drivers.i686 \
+        mesa-libGL.i686 && \
     mkdir -p /tmp/mesa-fix64/dri && \
+    mkdir -p /tmp/mesa-fix32/dri && \
     cp /usr/lib64/libgallium-*.so /tmp/mesa-fix64/ && \
     cp /usr/lib64/dri/kms_swrast_dri.so /tmp/mesa-fix64/dri/ && \
     cp /usr/lib64/dri/libdril_dri.so /tmp/mesa-fix64/dri/ && \
     cp /usr/lib64/dri/swrast_dri.so /tmp/mesa-fix64/dri/ && \
     cp /usr/lib64/dri/virtio_gpu_dri.so /tmp/mesa-fix64/dri/ && \
-    mkdir -p /tmp/mesa-fix32/dri && \
     cp /usr/lib/libgallium-*.so /tmp/mesa-fix32/ && \
     cp /usr/lib/dri/kms_swrast_dri.so /tmp/mesa-fix32/dri/ && \
     cp /usr/lib/dri/libdril_dri.so /tmp/mesa-fix32/dri/ && \
@@ -414,7 +415,7 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
         xorg-x11-server-Xwayland && \
     rsync -a /tmp/mesa-fix64/ /usr/lib64/ && \
     rsync -a /tmp/mesa-fix32/ /usr/lib/ && \
-    rm -rf /tmp/mesa-fix64 && \
+    rm -rf /tmp/mesa-fix64 /tmp/mesa-fix32 && \
     rm -rf /tmp/mesa-fix32 && \
     sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-*.repo && \
     rpm-ostree install \
@@ -422,7 +423,9 @@ RUN --mount=type=cache,dst=/var/cache/rpm-ostree \
         libbdplus \
         libbluray \
         libbluray-utils && \
+    # Disable RPMFusion repos
     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-*.repo && \
+    # Install switcheroo-control from COPR
     rpm-ostree override replace \
     --experimental \
     --from repo=copr:copr.fedorainfracloud.org:sentry:switcheroo-control_discrete \
